@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/storeFragment">
+
+    <fragment
+        android:id="@+id/storeFragment"
+        android:name="me.yaoandy107.triplecoupon.ui.store.StoreFragment"
+        android:label="振興三倍券" >
+        <action
+            android:id="@+id/action_storeFragment_to_filterFragment"
+            app:destination="@id/filterFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/filterFragment"
+        android:name="me.yaoandy107.triplecoupon.ui.filter.FilterFragment"
+        android:label="篩選" />
+</navigation>
