@@ -21,10 +21,14 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name="MyNavigationService"
-            android:foregroundServiceType="location">
-        </service>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBCEtGhbxyTU6WKPJr782hgODg5Fhfm_S8"/>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
     </application>
 
 </manifest>

@@ -12,7 +12,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
-import me.yaoandy107.triplecoupon.ui.filter.FilterFragment
 import me.yaoandy107.triplecoupon.ui.store.StoreFragment
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
@@ -20,14 +19,18 @@ import pub.devrel.easypermissions.EasyPermissions
 
 class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
-    private val filterFragment: FilterFragment = FilterFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val navController = findNavController(R.id.nav_host_fragment)
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_store,
+                R.id.navigation_map
+            )
+        )
         toolbar.setupWithNavController(navController, appBarConfiguration)
         bottom_navigation.setupWithNavController(navController)
         setSupportActionBar(toolbar)
@@ -78,20 +81,8 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.toolbar_menu, menu);
-        return true;
-    }
-
     companion object {
         private const val RC_LOCATION_FINE_PERM = 124
     }
 
 }
-
-//// Extension function to replace fragment
-//fun AppCompatActivity.replaceFragment(fragment: Fragment) {
-//    val transaction = supportFragmentManager.beginTransaction()
-//    transaction.replace(R.id.fragment_container, fragment)
-//    transaction.commit()
-//}

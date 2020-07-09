@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -24,7 +25,7 @@ import me.yaoandy107.triplecoupon.model.Store
 
 class StoreFragment : Fragment() {
 
-    private val viewModel: StoreViewModel by viewModels()
+    private val viewModel: StoreViewModel by activityViewModels()
     private var stores: List<Store> = ArrayList()
     private var displayStores: MutableList<Store> = ArrayList()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -49,20 +50,6 @@ class StoreFragment : Fragment() {
         setupLocationService()
         setupStoreList()
         setupLoadingIndicator()
-    }
-
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_filter -> {
-                val navController = findNavController(this)
-                navController.navigate(R.id.action_storeFragment_to_filterFragment)
-                true
-            }
-            else -> {
-                false
-            }
-        }
     }
 
     private fun setupLocationService() {
