@@ -2,11 +2,14 @@ package me.yaoandy107.triplecoupon
 
 import android.Manifest
 import android.os.Bundle
+import android.util.DisplayMetrics
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
@@ -16,8 +19,26 @@ import pub.devrel.easypermissions.EasyPermissions
 
 class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
+    private lateinit var adView: AdView
+    private val adSize: AdSize
+        get() {
+            val display = windowManager.defaultDisplay
+            val outMetrics = DisplayMetrics()
+            display.getMetrics(outMetrics)
+
+            val density = outMetrics.density
+
+            var adWidthPixels = ad_view_container.width.toFloat()
+            if (adWidthPixels == 0f) {
+                adWidthPixels = outMetrics.widthPixels.toFloat()
+            }
+
+            val adWidth = (adWidthPixels / density).toInt()
+            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -35,8 +56,9 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         getLocationPermission()
 
         MobileAds.initialize(this) { }
-        val adRequest = AdRequest.Builder().build()
-        ad_view.loadAd(adRequest)
+        adView = AdView(this)
+        ad_view_container.addView(adView)
+        loadBanner()
     }
 
     override fun onRequestPermissionsResult(
@@ -82,8 +104,18 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         }
     }
 
+    private fun loadBanner() {
+        adView.adSize = adSize
+        adView.adUnitId = AD_UNIT_ID
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
+    }
+
     companion object {
         private const val RC_LOCATION_FINE_PERM = 124
+
+        //        private const val AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111" // Debug use
+        private const val AD_UNIT_ID = "ca-app-pub-5236873091720551/5185055171"
     }
 
 }

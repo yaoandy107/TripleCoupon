@@ -18,12 +18,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextAppearance="@style/AppTheme.ActionBar.Title" />
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/ad_view"
+    <FrameLayout
+        android:id="@+id/ad_view_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:adSize="FULL_BANNER"
-        app:adUnitId="ca-app-pub-5236873091720551~1067321545"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
@@ -38,7 +36,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ad_view"
+        app:layout_constraintTop_toBottomOf="@+id/ad_view_container"
         app:navGraph="@navigation/nav_graph" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
