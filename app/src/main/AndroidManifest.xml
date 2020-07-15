@@ -23,11 +23,15 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBCEtGhbxyTU6WKPJr782hgODg5Fhfm_S8"/>
+            android:value="AIzaSyBCEtGhbxyTU6WKPJr782hgODg5Fhfm_S8" />
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-5236873091720551~1067321545" />
 
     </application>
 

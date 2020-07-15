@@ -2,17 +2,14 @@ package me.yaoandy107.triplecoupon
 
 import android.Manifest
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
-import me.yaoandy107.triplecoupon.ui.store.StoreFragment
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -36,6 +33,10 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         setSupportActionBar(toolbar)
 
         getLocationPermission()
+
+        MobileAds.initialize(this) { }
+        val adRequest = AdRequest.Builder().build()
+        ad_view.loadAd(adRequest)
     }
 
     override fun onRequestPermissionsResult(
@@ -64,7 +65,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
     @AfterPermissionGranted(RC_LOCATION_FINE_PERM)
     fun getLocationPermission() {
-        val perms = arrayOf<String>(
+        val perms = arrayOf(
             Manifest.permission.ACCESS_FINE_LOCATION
         )
 

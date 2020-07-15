@@ -18,6 +18,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextAppearance="@style/AppTheme.ActionBar.Title" />
 
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/ad_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:adSize="FULL_BANNER"
+        app:adUnitId="ca-app-pub-5236873091720551~1067321545"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
     <fragment
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -26,19 +36,20 @@
         android:background="#F0F4F7"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ad_view"
         app:navGraph="@navigation/nav_graph" />
-
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
+        android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:elevation="8dp"
-        app:menu="@menu/navigation_items"/>
+        app:menu="@menu/navigation_items" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
