@@ -5,16 +5,12 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -26,16 +22,15 @@ import me.yaoandy107.triplecoupon.model.Store
 class StoreFragment : Fragment() {
 
     private val viewModel: StoreViewModel by activityViewModels()
-    private var stores: List<Store> = ArrayList()
     private var displayStores: MutableList<Store> = ArrayList()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private var currentLocation: Location? = null
     private lateinit var adapter: StoreAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,8 +59,8 @@ class StoreFragment : Fragment() {
         ) {
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
-                    currentLocation = location
-                    handleDisplayStores()
+                    viewModel.currentLocation.value = location
+                    handleDisplayStores(displayStores)
                 }
         }
     }
@@ -79,24 +74,25 @@ class StoreFragment : Fragment() {
             this.adapter = this@StoreFragment.adapter
         }
         viewModel.stores.observe(viewLifecycleOwner, Observer { stores ->
-            this.stores = stores
-            handleDisplayStores()
+            handleDisplayStores(stores)
             this.adapter.notifyDataSetChanged()
         })
     }
 
-    private fun handleDisplayStores() {
-        val sortedStores = stores.sortedBy {
-            val targetLocation = Location("locationA")
-            targetLocation.latitude = it.latitude.toDouble()
-            targetLocation.longitude = it.longitude.toDouble()
-            currentLocation?.distanceTo(targetLocation)
-        }
+    private fun handleDisplayStores(stores: List<Store>) {
+        val newStores =
+            stores
+                .sortedBy {
+                    val targetLocation = Location("locationA")
+                    targetLocation.latitude = it.latitude.toDouble()
+                    targetLocation.longitude = it.longitude.toDouble()
+                    viewModel.currentLocation.value?.distanceTo(targetLocation)
+                }
+                .filter { store -> store.total.toInt() > 0 }
         with(this.displayStores) {
             clear()
-            addAll(sortedStores)
+            addAll(newStores)
         }
-
     }
 
     private fun setupLoadingIndicator() {
