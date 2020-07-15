@@ -6,9 +6,9 @@
     <fragment
         android:id="@+id/navigation_store"
         android:name="me.yaoandy107.triplecoupon.ui.store.StoreFragment"
-        android:label="振興三倍券" />
+        android:label="@string/toolbar_title" />
     <fragment
         android:id="@+id/navigation_map"
         android:name="me.yaoandy107.triplecoupon.ui.map.MapFragment"
-        android:label="MapFragment" />
+        android:label="@string/toolbar_title" />
 </navigation>
