@@ -92,10 +92,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location ->
-                    val currentPosition = LatLng(location.latitude, location.longitude)
-                    map?.moveCamera(CameraUpdateFactory.newLatLng(currentPosition))
-
+                .addOnSuccessListener { location: Location? ->
+                    location?.let {
+                        val currentPosition = LatLng(location.latitude, location.longitude)
+                        map?.moveCamera(CameraUpdateFactory.newLatLng(currentPosition))
+                    }
                 }
         }
     }
