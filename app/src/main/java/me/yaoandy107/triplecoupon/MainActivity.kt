@@ -3,6 +3,7 @@ package me.yaoandy107.triplecoupon
 import android.Manifest
 import android.os.Bundle
 import android.util.DisplayMetrics
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -38,27 +39,16 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val navController = findNavController(R.id.nav_host_fragment)
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_store,
-                R.id.navigation_map
-            )
-        )
-        toolbar.setupWithNavController(navController, appBarConfiguration)
-        bottom_navigation.setupWithNavController(navController)
-        setSupportActionBar(toolbar)
+        setupNavAndToolbar()
 
         getLocationPermission()
 
-        MobileAds.initialize(this) { }
-        adView = AdView(this)
-        ad_view_container.addView(adView)
-        loadBanner()
+        setupAds()
+
+        showInfoDialog()
     }
 
     override fun onRequestPermissionsResult(
@@ -104,11 +94,47 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         }
     }
 
+    private fun setupNavAndToolbar() {
+        val navController = findNavController(R.id.nav_host_fragment)
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_store,
+                R.id.navigation_map
+            )
+        )
+        toolbar.setupWithNavController(navController, appBarConfiguration)
+        bottom_navigation.setupWithNavController(navController)
+        setSupportActionBar(toolbar)
+    }
+
+    private fun setupAds() {
+        MobileAds.initialize(this) { }
+        adView = AdView(this)
+        ad_view_container.addView(adView)
+        loadBanner()
+    }
+
     private fun loadBanner() {
         adView.adSize = adSize
         adView.adUnitId = AD_UNIT_ID
         val adRequest = AdRequest.Builder().build()
         adView.loadAd(adRequest)
+    }
+
+    private fun showInfoDialog() {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("注意事項")
+            .setMessage(
+                "請攜帶： \n" +
+                        "・健保卡 和 新臺幣 1,000 元。\n" +
+                        "\n領取時間：\n" +
+                        "・109/7/15 ~ 109/12/31\n" +
+                        "・身分證末碼(單號)：週一、三、五\n" +
+                        "・身分證末碼(雙號)：週二、四\n" +
+                        "・週六則單雙號均可購買\n"
+            )
+            .setPositiveButton("關閉") { _, _ -> }
+            .show()
     }
 
     companion object {
